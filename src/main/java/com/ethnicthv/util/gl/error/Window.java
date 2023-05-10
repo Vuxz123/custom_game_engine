@@ -1,29 +1,21 @@
 package com.ethnicthv.util.gl.error;
 
-import com.ethnicthv.util.gl.GLFWUtil;
+import com.ethnicthv.util.gl.RenderSystem;
+import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.IntBuffer;
 
 public class Window {
     private final long windowHandle;
-    private int width;
-    private int height;
+    private boolean isVsync = false;
 
     public Window(int width, int height, String title) {
-        this.width = width;
-        this.height = height;
 
-        // Set up an error callback to print any GLFW errors to the console
-        GLFWUtil.setErrorCallBack(System.out);
-
-        // Initialize GLFW and create a window
-        if (!GLFW.glfwInit()) {
-            throw new IllegalStateException("Unable to initialize GLFW");
-        }
-
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
         windowHandle = GLFW.glfwCreateWindow(width, height, title, 0, 0);
 
         if (windowHandle == 0) {
@@ -46,24 +38,40 @@ public class Window {
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
+    public boolean isVsync() {
+        return isVsync;
+    }
+
+    public void toggleVsync() {
+        RenderSystem.assertRenderThread();
+        isVsync = !isVsync;
+        GLFW.glfwSwapInterval(isVsync ? 1 : 0);
+    }
+
     public long getWindowHandle() {
         return windowHandle;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public Vector2i getSize() {
+        RenderSystem.assertRenderThread();
+        int width, height;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer int1 = stack.callocInt(1);
+            IntBuffer int2 = stack.callocInt(1);
+            GLFW.glfwGetWindowSize(windowHandle, int1, int2);
+            width = int1.get(0);
+            height = int2.get(0);
+        }
+        return new Vector2i(width, height);
     }
 
     public void destroy() {
+        RenderSystem.assertRenderThread();
         GLFW.glfwDestroyWindow(windowHandle);
-        GLFW.glfwSetErrorCallback(null).free();
     }
 
     public void update() {
+        RenderSystem.assertRenderThread();
         // Swap the buffers and poll for any events
         GLFW.glfwSwapBuffers(windowHandle);
         GLFW.glfwPollEvents();
@@ -73,6 +81,7 @@ public class Window {
     }
 
     public boolean shouldClose() {
+        RenderSystem.assertRenderThread();
         return GLFW.glfwWindowShouldClose(windowHandle);
     }
 

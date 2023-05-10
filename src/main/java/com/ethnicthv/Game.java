@@ -1,9 +1,7 @@
 package com.ethnicthv;
 
-import com.ethnicthv.util.gl.GLFWUtil;
+import com.ethnicthv.util.gl.RenderSystem;
 import com.ethnicthv.util.gl.error.GLFWError;
-
-import static org.lwjgl.glfw.GLFW.glfwTerminate;
 
 public class Game {
     public static Game INSTANCE = new Game();
@@ -18,23 +16,21 @@ public class Game {
 
     private void init() {
         try {
-            GLFWUtil.initialize();
+            RenderSystem.initialize();
         } catch (GLFWError e) {
             throw new RuntimeException(e);
         }
-        GLFWUtil.createWindow();
-
+        RenderSystem.createWindow(1000,900, "Test");
     }
 
     private void loop() {
-        while (!GLFWUtil.window.shouldClose()) {
-            GLFWUtil.window.update();
+        while (!RenderSystem.window.shouldClose()) {
+            RenderSystem.window.update();
         }
     }
 
     private void close() {
-        GLFWUtil.window.destroy();
-        glfwTerminate();
+        RenderSystem.destroy();
     }
 
 }
