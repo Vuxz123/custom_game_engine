@@ -1,5 +1,6 @@
 package com.ethnicthv.util.gl.error;
 
+import com.ethnicthv.util.gl.GLFWUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -15,7 +16,7 @@ public class Window {
         this.height = height;
 
         // Set up an error callback to print any GLFW errors to the console
-        GLFWErrorCallback.createPrint(System.err).set();
+        GLFWUtil.setErrorCallBack(System.out);
 
         // Initialize GLFW and create a window
         if (!GLFW.glfwInit()) {
@@ -59,7 +60,6 @@ public class Window {
 
     public void destroy() {
         GLFW.glfwDestroyWindow(windowHandle);
-        GLFW.glfwTerminate();
         GLFW.glfwSetErrorCallback(null).free();
     }
 
@@ -67,8 +67,6 @@ public class Window {
         // Swap the buffers and poll for any events
         GLFW.glfwSwapBuffers(windowHandle);
         GLFW.glfwPollEvents();
-
-
 
         // Clear the framebuffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

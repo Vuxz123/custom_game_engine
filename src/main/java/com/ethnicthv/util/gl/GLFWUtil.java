@@ -9,18 +9,16 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import java.io.PrintStream;
 
 public class GLFWUtil {
-    static RenderThread thread;
+    static Thread renderThread;
 
-    public static void runRenderThread(Window window) {
-        thread = new RenderThread(window);
-        thread.start();
-    }
+    public static Window window;
 
     public static void setErrorCallBack(PrintStream stream) {
         GLFWErrorCallback.createPrint(stream).set();
     }
 
     public static void initialize() throws GLFWError {
+        renderThread = Thread.currentThread();
         if(!glfwInit()) {
             throw new GLFWError();
         }
@@ -32,7 +30,11 @@ public class GLFWUtil {
     }
 
     public static boolean assertRenderThread() {
-        return Thread.currentThread() == thread;
+        return Thread.currentThread() == renderThread;
+    }
+
+    public static void createWindow() {
+        window = new Window(100,100,"Test");
     }
 
 }
