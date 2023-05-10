@@ -1,6 +1,5 @@
-package com.ethnicthv.util.gl.error;
+package com.ethnicthv.core.gl;
 
-import com.ethnicthv.util.gl.RenderSystem;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;

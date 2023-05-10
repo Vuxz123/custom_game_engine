@@ -1,4 +1,4 @@
-package com.ethnicthv.util.gl.error;
+package com.ethnicthv.core.gl.error;
 
 public class GLFWError extends Throwable {
 }
