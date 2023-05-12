@@ -1,7 +1,7 @@
-package com.ethnicthv;
+package com.ethnicthv.core.rd;
 
-import com.ethnicthv.core.gl.RenderSystem;
-import com.ethnicthv.core.gl.error.GLFWError;
+import com.ethnicthv.core.rd.gl.RenderSystem;
+import com.ethnicthv.core.rd.gl.error.GLFWError;
 
 public class Game {
     public static Game INSTANCE = new Game();

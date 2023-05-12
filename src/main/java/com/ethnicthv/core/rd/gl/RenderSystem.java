@@ -1,6 +1,6 @@
-package com.ethnicthv.core.gl;
+package com.ethnicthv.core.rd.gl;
 
-import com.ethnicthv.core.gl.error.GLFWError;
+import com.ethnicthv.core.rd.gl.error.GLFWError;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 

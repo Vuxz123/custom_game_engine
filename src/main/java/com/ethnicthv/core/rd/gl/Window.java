@@ -1,4 +1,4 @@
-package com.ethnicthv.core.gl;
+package com.ethnicthv.core.rd.gl;
 
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
